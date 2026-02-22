@@ -37,4 +37,9 @@ public class AddressController {
         addressService.deleteAddress(id);
         return ResponseEntity.ok("Address deleted successfully");
     }
+
+    @PatchMapping("/{id}/set-default")
+    public ResponseEntity<Address> setAsDefault(@PathVariable Long id) {
+        return ResponseEntity.ok(addressService.setAddressAsDefault(id));
+    }
 }

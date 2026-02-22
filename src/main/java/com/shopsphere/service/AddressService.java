@@ -74,4 +74,18 @@ public class AddressService {
         // but for now, a simple delete is fine.
         addressRepository.delete(address);
     }
+
+    @Transactional
+    public Address setAddressAsDefault(Long addressId) {
+        // 1. Find the target address
+        Address address = addressRepository.findById(addressId)
+                .orElseThrow(() -> new RuntimeException("Address not found"));
+
+        // 2. Clear current default for this specific user
+        handleDefaultReset(address.getUserId());
+
+        // 3. Set this one as default and save
+        address.setIsDefault(true);
+        return addressRepository.save(address);
+    }
 }
