@@ -24,4 +24,17 @@ public class AddressController {
     public ResponseEntity<List<Address>> getUserAddresses(@PathVariable Long userId) {
         return ResponseEntity.ok(addressService.getAddressesByUserId(userId));
     }
+
+    // Update an existing address
+    @PutMapping("/{id}")
+    public ResponseEntity<Address> updateAddress(@PathVariable Long id, @RequestBody Address address) {
+        return ResponseEntity.ok(addressService.updateAddress(id, address));
+    }
+
+    // Delete an address
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteAddress(@PathVariable Long id) {
+        addressService.deleteAddress(id);
+        return ResponseEntity.ok("Address deleted successfully");
+    }
 }

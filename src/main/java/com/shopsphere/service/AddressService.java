@@ -43,4 +43,35 @@ public class AddressService {
     public List<Address> getAddressesByUserId(Long userId) {
         return addressRepository.findByUserId(userId);
     }
+
+    @Transactional
+    public Address updateAddress(Long addressId, Address updatedAddress) {
+        Address existingAddress = addressRepository.findById(addressId)
+                .orElseThrow(() -> new RuntimeException("Address not found"));
+
+        // Update fields
+        existingAddress.setStreet(updatedAddress.getStreet());
+        existingAddress.setCity(updatedAddress.getCity());
+        existingAddress.setState(updatedAddress.getState());
+        existingAddress.setPincode(updatedAddress.getPincode());
+
+        // Logic: If user is setting THIS address as default now
+        if (Boolean.TRUE.equals(updatedAddress.getIsDefault()) && !Boolean.TRUE.equals(existingAddress.getIsDefault())) {
+            handleDefaultReset(existingAddress.getUserId());
+            existingAddress.setIsDefault(true);
+        } else if (updatedAddress.getIsDefault() != null) {
+            existingAddress.setIsDefault(updatedAddress.getIsDefault());
+        }
+
+        return addressRepository.save(existingAddress);
+    }
+
+    public void deleteAddress(Long addressId) {
+        Address address = addressRepository.findById(addressId)
+                .orElseThrow(() -> new RuntimeException("Address not found"));
+
+        // Pro-Tip: If deleting a default address, you might want to assign a new default,
+        // but for now, a simple delete is fine.
+        addressRepository.delete(address);
+    }
 }
