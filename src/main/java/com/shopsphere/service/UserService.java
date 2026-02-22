@@ -47,8 +47,8 @@ public class UserService {
         // 3. Save the User
         User savedUser = userRepository.save(user);
 
-        // 4. Assign Default Role (ROLE_USER)
-        roleRepository.findByName("ROLE_USER").ifPresent(role -> {
+        // 4. Assign Default Role (ROLE_CUSTOMER)
+        roleRepository.findByName("ROLE_CUSTOMER").ifPresent(role -> {
             UserRole userRole = new UserRole();
             userRole.setUserId(savedUser.getId());
             userRole.setRoleId(role.getId());
