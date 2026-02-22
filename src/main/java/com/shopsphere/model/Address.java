@@ -21,7 +21,7 @@ public class Address {
     private String city;
     private String state;
 
-    @Column(name = "pincode")
+    @Column(name = "pin_code")
     private String pincode;
 
     @Column(name = "is_default")

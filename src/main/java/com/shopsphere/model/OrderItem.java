@@ -15,10 +15,10 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "orderid", nullable = false)
+    @Column(name = "order_id", nullable = false)
     private Long orderId;
 
-    @Column(name = "productid", nullable = false)
+    @Column(name = "product_id", nullable = false)
     private Long productId;
 
     @Column(nullable = false)

@@ -14,10 +14,10 @@ public class CartItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "cartid", nullable = false)
+    @Column(name = "cart_id", nullable = false)
     private Long cartId;
 
-    @Column(name = "productid", nullable = false)
+    @Column(name = "product_id", nullable = false)
     private Long productId;
 
     @Column(nullable = false)
