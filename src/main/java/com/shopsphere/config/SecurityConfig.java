@@ -20,6 +20,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // Disable CSRF for testing with Postman
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll() // Allow registration/login
+                        .requestMatchers("/api/addresses").permitAll()
                         .anyRequest().authenticated() // Protect everything else
                 );
         return http.build();
