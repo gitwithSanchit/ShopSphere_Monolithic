@@ -8,6 +8,7 @@ import com.shopsphere.repository.RoleRepository;
 import com.shopsphere.repository.UserRoleRepository;
 import com.shopsphere.repository.CartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +27,9 @@ public class UserService {
     @Autowired
     private CartRepository cartRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder; // Inject the bean here
+
     // We use @Transactional to ensure that if Cart creation fails,
     // the User isn't saved either. (All or nothing)
     @Transactional
@@ -36,7 +40,9 @@ public class UserService {
         }
 
         // 2. Hash the password (using a placeholder for now, implement BCrypt later)
-        // user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
+        // We take the plain text from the DTO and replace it with a 60-character hash
+        String encodedPassword = passwordEncoder.encode(user.getPasswordHash());
+        user.setPasswordHash(encodedPassword);
 
         // 3. Save the User
         User savedUser = userRepository.save(user);
@@ -55,6 +61,19 @@ public class UserService {
         cartRepository.save(cart);
 
         return savedUser;
+    }
+
+    public User loginUser(String email, String rawPassword) {
+        // 1. Fetch user by email
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Invalid email or password"));
+
+        // 2. Check if the raw password matches the encoded hash in DB
+        if (passwordEncoder.matches(rawPassword, user.getPasswordHash())) {
+            return user;
+        } else {
+            throw new RuntimeException("Invalid email or password");
+        }
     }
 
     public User getUserByEmail(String email) {
