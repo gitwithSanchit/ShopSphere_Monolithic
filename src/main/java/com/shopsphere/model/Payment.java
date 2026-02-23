@@ -19,7 +19,7 @@ public class Payment {
     @Column(name = "order_id", nullable = false)
     private Long orderId;
 
-    @Column(nullable = false)
+    @Column(name = "payment_method",nullable = false)
     private String method; // e.g., 'UPI', 'CREDIT_CARD', 'COD'
 
     @Column(nullable = false)
@@ -31,11 +31,11 @@ public class Payment {
     @Column(name = "transaction_id")
     private String transactionId; // Reference from the payment gateway
 
-    @Column(name = "payment_date")
-    private LocalDateTime paymentDate;
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
     @PrePersist
     protected void onCreate() {
-        this.paymentDate = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now();
     }
 }
