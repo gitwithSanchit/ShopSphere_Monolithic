@@ -21,6 +21,9 @@ public class Inventory {
     @Column(name = "quantity_available", nullable = false)
     private Integer quantityAvailable;
 
+    @Column(name = "low_stock_threshold")
+    private Integer lowStockThreshold = 5; // Default to 5 if not specified
+
     @Column(name = "last_updated")
     private LocalDateTime lastUpdated;
 
@@ -29,5 +32,9 @@ public class Inventory {
     @PreUpdate
     protected void onUpdate() {
         this.lastUpdated = LocalDateTime.now();
+    }
+
+    public boolean isLowStock() {
+        return this.quantityAvailable <= this.lowStockThreshold;
     }
 }
