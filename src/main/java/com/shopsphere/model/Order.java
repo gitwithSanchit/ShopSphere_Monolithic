@@ -19,20 +19,24 @@ public class Order {
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Column(name = "orderdate", updatable = false)
-    private LocalDateTime orderDate;
+    @Column(name = "address_id", nullable = false)
+    private Long addressId; // Added for shipping logic
+
+    // Map to the existing DB column 'created_at'
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
 
     @Column(name = "total_amount", nullable = false)
     private BigDecimal totalAmount;
 
     @Column(nullable = false)
-    private String status; // e.g., 'PENDING', 'COMPLETED', 'CANCELLED'
+    private String status;
 
     @PrePersist
     protected void onCreate() {
-        this.orderDate = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now();
         if (this.status == null) {
-            this.status = "PENDING"; // Default status for new orders
+            this.status = "PENDING";
         }
     }
 }
