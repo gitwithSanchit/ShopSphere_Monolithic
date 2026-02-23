@@ -2,15 +2,17 @@ package com.shopsphere.repository;
 
 import com.shopsphere.model.CartItem;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import java.util.Optional;
 import java.util.List;
 
-@Repository
 public interface CartItemRepository extends JpaRepository<CartItem, Long> {
 
-    // Crucial for displaying the list of items inside a user's cart
+    // To check if a product is already in the cart
+    Optional<CartItem> findByCartIdAndProductId(Long cartId, Long productId);
+
+    // To get all items in a specific cart
     List<CartItem> findByCartId(Long cartId);
 
-    // Useful for checking if a product is already in the cart so we can just increment quantity
-    CartItem findByCartIdAndProductId(Long cartId, Long productId);
+    // To clear the cart after an order is placed
+    void deleteByCartId(Long cartId);
 }

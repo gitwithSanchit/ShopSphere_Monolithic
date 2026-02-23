@@ -23,6 +23,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/addresses/**").permitAll()
                         .requestMatchers("/api/users/**").permitAll()
                         .requestMatchers("/api/inventory/**").permitAll()
+                        .requestMatchers("/api/cart/**").permitAll()
                         .anyRequest().authenticated() // Protect everything else
                 );
         return http.build();
